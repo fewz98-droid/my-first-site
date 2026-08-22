@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу — Алина и Максим</title>
+    <!-- Подключаем шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f5f0;
+            --text-color: #2c2c2c;
+            --accent-color: #d94e28;
+            --card-bg: #fffbf7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: 40px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1600px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Общие стили для объёмного жемчуга */
+        .pearl {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f4efe6 40%, #d8cec0 85%, #b5a898 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), inset -2px -3px 6px rgba(130, 115, 95, 0.35), inset 2px 2px 4px rgba(255, 255, 255, 0.9);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Главный конверт-открытка */
+        .site-envelope {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+            border: 1px solid #e8e1d5;
+            overflow: visible;
+        }
+
+        /* Обложка открытки (закрывает весь сайт до клика) */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f2ece1 0%, #e3dbcc 100%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: transform 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease 0.8s;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-bottom: 2px solid #d4c9b8;
+            cursor: pointer;
+            padding: 60px 20px 20px 20px;
+            text-align: center;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        /* Инициалы сверху */
+        .flap-title {
+            font-family: 'Caveat', cursive;
+            font-size: 4.5rem;
+            color: var(--accent-color);
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+        /* Подсказка прямо под инициалами */
+        .flap-subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #555;
+            animation: pulseHint 2s infinite;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Состояние после клика (открыто) */
+        .site-envelope.opened .envelope-flap {
+            transform: rotateX(-115deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Внутренняя часть сайта */
+        .site-inner-content {
+            padding: 35px 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease 0.5s, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s;
+            position: relative;
+        }
+
+        .site-envelope.opened .site-inner-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 1 БЛОК: Заголовок и фото сверху */
+        .main-site-title {
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 3.5px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .hero-block {
+            position: relative;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+
+        .photo-collage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .photo-box {
+            width: 85%;
+            max-width: 260px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            background: #fff;
+            padding: 8px 8px 18px 8px;
+            border: 2px solid var(--accent-color); /* Красная рамка для фото */
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(20%) contrast(1.05);
+        }
+
+        .chaotic-name {
+            font-family: 'Caveat', cursive;
+            color: var(--accent-color);
+            font-size: 4rem;
+            line-height: 0.75;
+            position: absolute;
+            z-index: 10;
+            user-select: none;
+            filter: drop-shadow(2px 3px 0px rgba(255,255,255,0.9));
+        }
+
+        .name-alina {
+            top: 5px;
+            left: 8%;
+            transform: rotate(-6deg);
+        }
+
+        .name-maksim {
+            bottom: -10px;
+            right: 8%;
+            transform: rotate(4deg);
+        }
+
+        .ampersand {
+            font-family: 'Caveat', cursive;
+            font-size: 2.8rem;
+            color: var(--text-color);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            z-index: 12;
+            background: rgba(255, 251, 247, 0.9);
+            padding: 0 8px;
+            border-radius: 50%;
+        }
+
+        /* 2 БЛОК: Календарь (Август 2026) */
+        .calendar-block {
+            background: #ffffff;
+            padding: 25px 20px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-radius: 6px;
+            border: 1px solid #eee8e0;
+            text-align: center;
+            position: relative;
+        }
+
+        .calendar-year-header {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--accent-color);
+            margin-bottom: 2px;
+            line-height: 1;
+        }
+
+        .calendar-month-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2c2c2c;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            font-size: 0.95rem;
+            color: #444;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .calendar-day-name {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding-bottom: 8px;
+        }
+
+        .calendar-day {
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 400;
+            position: relative;
+        }
+
+        .calendar-day.empty {
+            visibility: hidden;
+        }
+
+        .calendar-day.selected {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .heart-badge {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #ff5c5c, #d93838);
+            box-shadow: 0 3px 6px rgba(217, 56, 56, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #ffffff;
+            font-weight: 600;
+            z-index: 2;
+            transform: rotate(-45deg);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .heart-badge::before,
+        .heart-badge::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #ff5c5c, #d93838);
+            border-radius: 50%;
+        }
+
+        .heart-badge::before {
+            top: -15px;
+            left: 0;
+        }
+
+        .heart-badge::after {
+            left: 15px;
+            top: 0;
+        }
+
+        .heart-number {
+            transform: rotate(45deg);
+            position: relative;
+            z-index: 3;
+        }
+
+        /* 3 БЛОК: Обращение к гостям */
+        .message-block {
+            background: #ffffff;
+            padding: 30px 25px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-radius: 4px;
+            border-left: 3px solid var(--accent-color);
+            border-right: 3px solid var(--accent-color);
+            text-align: center;
+            position: relative;
+        }
+
+        .message-title {
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #2c2c2c;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .message-text {
+            font-size: 1.02rem;
+            color: #444;
+            line-height: 1.65;
+            margin-bottom: 14px;
+        }
+
+        .message-text:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 4 БЛОК: Программа дня */
+        .schedule-block {
+            margin-top: 35px;
+            border-top: 1px solid #e0dad0;
+            padding-top: 35px;
+            position: relative;
+        }
+
+        .schedule-title {
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .schedule-items {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .schedule-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            padding: 20px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            text-align: center;
+            position: relative;
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .schedule-time {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .schedule-info {
+            border-top: 1px dashed #eae5dc;
+            padding-top: 10px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .schedule-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: #2c2c2c;
+        }
+
+        .schedule-desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* 5 БЛОК: Завершение */
+        .closing-block {
+            background: #ffffff;
+            padding: 40px 25px;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid #eee8e0;
+        }
+
+        .closing-text-large {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            line-height: 1.6;
+            color: #2c2c2c;
+            margin-bottom: 20px;
+        }
+
+        .closing-sign {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Главный конверт-открытка -->
+    <div class="site-envelope" id="siteEnvelope" onclick="this.classList.toggle('opened')">
+        
+        <!-- Обложка открытки с хаотичным жемчугом -->
+        <div class="envelope-flap">
+            <div class="pearl" style="width: 14px; height: 14px; top: 25px; left: 35px;"></div>
+            <div class="pearl" style="width: 8px; height: 8px; top: 40px; right: 45px;"></div>
+            <div class="pearl" style="width: 18px; height: 18px; top: 120px; left: 20px;"></div>
+            <div class="pearl" style="width: 10px; height: 10px; top: 105px; right: 28px;"></div>
+            <div class="pearl" style="width: 12px; height: 12px; bottom: 80px; left: 40px;"></div>
+            <div class="pearl" style="width: 16px; height: 16px; bottom: 50px; right: 35px;"></div>
+            <div class="pearl" style="width: 9px; height: 9px; bottom: 30px; left: 48%;"></div>
+
+            <div class="flap-title">А & М</div>
+            <div class="flap-subtitle">Нажмите, чтобы открыть</div>
+        </div>
+
+        <!-- Внутренняя часть сайта -->
+        <div class="site-inner-content">
+            
+            <div class="pearl" style="width: 12px; height: 12px; top: 15px; left: 15px;"></div>
+            <div class="pearl" style="width: 16px; height: 16px; top: 45px; right: 20px;"></div>
+            <div class="pearl" style="width: 9px; height: 9px; top: 190px; left: 10px;"></div>
+            <div class="pearl" style="width: 14px; height: 14px; top: 320px; right: 12px;"></div>
+            <div class="pearl" style="width: 10px; height: 10px; top: 480px; left: 25px;"></div>
+            <div class="pearl" style="width: 18px; height: 18px; top: 650px; right: 15px;"></div>
+            <div class="pearl" style="width: 12px; height: 12px; bottom: 180px; left: 15px;"></div>
+            <div class="pearl" style="width: 15px; height: 15px; bottom: 60px; right: 20px;"></div>
+            <div class="pearl" style="width: 8px; height: 8px; bottom: 20px; left: 50%;"></div>
+
+            <!-- 1 БЛОК: Заголовок и фото -->
+            <h1 class="main-site-title">Приглашение на свадьбу</h1>
+
+            <div class="hero-block">
+                <div class="chaotic-name name-alina">Алина</div>
+
+                <div class="photo-collage">
+                    <div class="photo-box">
+                        <img src="images/photo1.jpg" alt="Алина">
+                    </div>
+                    <div class="photo-box">
+                        <img src="images/photo2.jpg" alt="Максим">
+                    </div>
+                </div>
+
+                <div class="ampersand">&</div>
+
+                <div class="chaotic-name name-maksim">Максим</div>
+            </div>
+
+            <!-- 2 БЛОК: Календарь на август 2026 -->
+            <div class="calendar-block">
+                <div class="calendar-year-header">2026</div>
+                <div class="calendar-month-title">Август</div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-day-name">Пн</div>
+                    <div class="calendar-day-name">Вт</div>
+                    <div class="calendar-day-name">Ср</div>
+                    <div class="calendar-day-name">Чт</div>
+                    <div class="calendar-day-name">Пт</div>
+                    <div class="calendar-day-name">Сб</div>
+                    <div class="calendar-day-name">Вс</div>
+
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day">1</div>
+                    <div class="calendar-day">2</div>
+
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day">8</div>
+                    <div class="calendar-day">9</div>
+
+                    <div class="calendar-day">10</div>
+                    <div class="calendar-day">11</div>
+                    <div class="calendar-day">12</div>
+                    <div class="calendar-day">13</div>
+                    <div class="calendar-day">14</div>
+                    <div class="calendar-day">15</div>
+                    <div class="calendar-day">16</div>
+
+                    <div class="calendar-day">17</div>
+                    <div class="calendar-day">18</div>
+                    <div class="calendar-day">19</div>
+                    <div class="calendar-day">20</div>
+                    <div class="calendar-day">21</div>
+                    <div class="calendar-day">22</div>
+                    <div class="calendar-day">23</div>
+
+                    <div class="calendar-day">24</div>
+                    <div class="calendar-day">25</div>
+                    <div class="calendar-day">26</div>
+                    <div class="calendar-day">27</div>
+                    <div class="calendar-day selected">
+                        <div class="heart-badge">
+                            <span class="heart-number">28</span>
+                        </div>
+                    </div>
+                    <div class="calendar-day">29</div>
+                    <div class="calendar-day">30</div>
+
+                    <div class="calendar-day">31</div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                </div>
+            </div>
+
+            <!-- 3 БЛОК: Обращение к гостям -->
+            <div class="message-block">
+                <div class="message-title">Дорогой гость!</div>
+                <p class="message-text">Мы рады сообщить Вам, что состоится самое главное торжество в нашей жизни — день нашей свадьбы!</p>
+                <p class="message-text">Приглашаем Вас разделить с нами радость этого незабываемого дня.</p>
+            </div>
+
+            <!-- 4 БЛОК: Программа дня -->
+            <div class="schedule-block">
+                <div class="schedule-title">Программа дня</div>
+                
+                <div class="schedule-items">
+                    <div class="schedule-item">
+                        <div class="schedule-time">12:00</div>
+                        <div class="schedule-info">
+                            <div class="schedule-name">Торжественная роспись</div>
+                            <div class="schedule-desc">ЗАГС, г. Сургут, б-р. Свободы, д. 5</div>
+                        </div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">18:00</div>
+                        <div class="schedule-info">
+                            <div class="schedule-name">Свадебный банкет</div>
+                            <div class="schedule-desc">Кафе «Dolce Vita», г. Лянтор</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 БЛОК: Завершение -->
+            <div class="closing-block">
+                <div class="closing-text-large">Ваши улыбки и прекрасное настроение — лучший подарок для нас!</div>
+                <div class="closing-sign">Алина & Максим</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
